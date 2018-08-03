@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Aluno;
 
 class AlunoController extends Controller
 {
@@ -13,7 +14,8 @@ class AlunoController extends Controller
      */
     public function index()
     {
-        //
+        $alunos = Aluno::all(); //obtem todos os alunos cadastrados
+        return view('aluno.index')->with('alunos',$alunos);
     }
 
     /**
@@ -23,7 +25,7 @@ class AlunoController extends Controller
      */
     public function create()
     {
-        //
+        return view('aluno.create');
     }
 
     /**
@@ -34,7 +36,13 @@ class AlunoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request,[
+                        'nome' => 'required|max:100',
+                        'endereco' => 'required|max:100',
+                        'dataNascimento' => 'required',
+                    ]);
+        Aluno::create($request->all());
+        return redirect('aluno');
     }
 
     /**
